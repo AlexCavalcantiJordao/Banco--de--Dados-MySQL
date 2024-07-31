@@ -54,3 +54,14 @@ foreign key (ID_editora)
 references tbl_editoras(ID_editora);
 
 select * from tbl_Livro;
+
+
+insert into tbl_autores(ID_Autor, Nome_Autor, SobreNome_Autor) values(1, "Daniel", "Barret");
+
+insert into tbl_autores(ID_Autor, Nome_Autor, SobreNome_Autor) values(2, "Gerald", "Carter");
+
+insert into tbl_autores(ID_Autor, Nome_Autor, SobreNome_Autor) values(3, "Mark", "Sobell");
+
+insert into tbl_autores(ID_Autor, Nome_Autor, SobreNome_Autor) values(4, "William", "Stanek");
+
+insert into tbl_autores(ID_Autor, Nome_Autor, SobreNome_Autor) values(5, "Richard", "Blum");
