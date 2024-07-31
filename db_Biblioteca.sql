@@ -1,3 +1,5 @@
+use db_Biblioteca;
+
 create table if not exists tbl_Livro(
 ID_Livro smallint auto_increment primary key,
 Nome_Livro varchar(50) not null,
@@ -28,3 +30,17 @@ Produtos(Cod_Produto));
 
 show tables;
 
+alter table tbl_Livro
+drop column Id_autor;
+
+select * from tbl_Livro;
+
+alter table tbl_Livro
+add ID_Autor smallint not null;
+
+alter table tbl_Livro
+add constraint fk_ID_Autor
+foreign key (ID_Autor)
+references tbl_autores (ID_autor);
+
+select * from tbl_Livro;
