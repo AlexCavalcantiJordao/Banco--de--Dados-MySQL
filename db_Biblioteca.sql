@@ -44,3 +44,13 @@ foreign key (ID_Autor)
 references tbl_autores (ID_autor);
 
 select * from tbl_Livro;
+
+alter table tbl_Livro
+add ID_editora smallint not null;
+
+alter table tbl_Livro
+add constraint fk_id_editora
+foreign key (ID_editora)
+references tbl_editoras(ID_editora);
+
+select * from tbl_Livro;
