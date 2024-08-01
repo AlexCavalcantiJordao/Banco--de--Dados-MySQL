@@ -111,6 +111,28 @@ select Nome_Livro, Preco_Livro from tbl_Livro order by Preco_Livro desc;
 
 show index from tbl_Editoras;
 
-explain select * from tbl_Editoras where NomeEditora = 'Springer';
-
 create index idx_editora on tbl_Editoras(NomeEditora);
+
+select Nome_Livro, Data_Pub from tbl_Livro where ID_Autor = 1;
+
+select ID_Autor, Nome_Autor from tbl_autores where SobreNome_Autor = 'Stanek';
+
+select * from tbl_Livro where ID_Livro > 2 and ID_Autor < 3;
+
+select * from tbl_Livro where ID_Livro > 2 or ID_Autor < 3;
+
+select * from tbl_Livro where ID_Livro > 2 and not ID_Autor < 3;
+
+-- Operadores IN e NOT IN....
+-- Filtragens usando listas de valores no MySQL....
+
+use db_Biblioteca;
+
+-- Sintaxe:
+select coluna(s) from tabelas(s) where expressão valor NOT IN (lista de valores);
+
+-- Exemplo 01:
+select NomeLivro, NomeEditora from tbl_livro where IdEditora in (2,4);
+
+-- Exemplo 02:
+select NomeLivro, Edicao from tbl_livro where Edicao not in (1,2);
