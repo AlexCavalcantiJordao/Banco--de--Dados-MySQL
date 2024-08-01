@@ -100,4 +100,17 @@ select Nome_Autor from tbl_autores;
 select * from tbl_autores;
 select Nome_Livro from tbl_livro;
 
-select Nome_Livro, ISBN from tbl_Livro;
+select Nome_Livro, ISBN, Data_Pub from tbl_Livro;
+
+SELECT * FROM tbl_Livro ORDER BY Nome_Livro DESC;
+-- ORDER BY Nome_Livro DESC;
+
+select Nome_Livro, ID_Editora from tbl_Livro order by ID_Editora;
+
+select Nome_Livro, Preco_Livro from tbl_Livro order by Preco_Livro desc;
+
+show index from tbl_Editoras;
+
+explain select * from tbl_Editoras where NomeEditora = 'Springer';
+
+create index idx_editora on tbl_Editoras(NomeEditora);
