@@ -136,3 +136,16 @@ select NomeLivro, NomeEditora from tbl_livro where IdEditora in (2,4);
 
 -- Exemplo 02:
 select NomeLivro, Edicao from tbl_livro where Edicao not in (1,2);
+
+-- Exemplo 03:
+select NomeLivro, IdEditora from tbl_livro where IdEditora in (select IDEditora from tbl_editora where NomeEditora = 'Wiley' or NomeEditora = 'Microsoft Press');
+
+select * From tbl_livro;
+
+select NomeEditora, IdEditora from tbl_editora;
+
+select * from tbl_teste_incremento;
+
+delete from tbl_teste_incremento where Codigo = 90;
+
+truncate table tbl_teste_incremento;
