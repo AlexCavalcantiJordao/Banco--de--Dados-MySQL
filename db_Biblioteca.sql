@@ -149,3 +149,38 @@ select * from tbl_teste_incremento;
 delete from tbl_teste_incremento where Codigo = 90;
 
 truncate table tbl_teste_incremento;
+
+select colunas 
+as alias_coluna 
+from tabela as alias_tabela;
+
+select Nome_Livro as Livros, Preco_Livro as Preço
+from tbl_Livro;
+
+select count(*) from tbl_autores;
+
+select count(distinct id_autor) from tbl_Livro;
+
+select max(Preco_Livro) from tbl_Livro;
+
+select min(Preco_Livro) from tbl_Livro;
+
+select avg(Preco_Livro) from tbl_Livro;
+
+select sum(Preco_Livro) from tbl_Livro;
+
+create table Clientes(
+ID_Cliente smallint,
+Nome_Cliente varchar (20),
+constraint primary key  (ID_Cliente)
+);
+
+insert into Clientes (ID_Cliente, Nome_Cliente) values (22, 'Alex');
+
+insert Clientes (ID_Cliente, Nome_Cliente) values (34,'Fabio');
+
+insert Cliente (ID_Cliente, Nome_CLiente) values (43,'Gilberto');
+
+select * from Clientes;
+
+rename table Clientes to Meus_Clientes
