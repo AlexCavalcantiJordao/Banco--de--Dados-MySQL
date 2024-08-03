@@ -1,3 +1,5 @@
+create database db_Biblioteca;
+
 use db_Biblioteca;
 
 create table if not exists tbl_Livro(
@@ -51,7 +53,7 @@ add ID_editora smallint not null;
 alter table tbl_Livro
 add constraint fk_id_editora
 foreign key (ID_editora)
-references tbl_editoras(ID_editora);
+references tbl_editora(ID_editora);
 
 select * from tbl_Livro;
 
@@ -97,12 +99,15 @@ insert into tbl_Livro(Nome_Livro, ISBN, Data_Pub, Preco_Livro, ID_Autor, ID_Edit
 select * from tbl_livro;
 
 select Nome_Autor from tbl_autores;
+
 select * from tbl_autores;
+
 select Nome_Livro from tbl_livro;
 
 select Nome_Livro, ISBN, Data_Pub from tbl_Livro;
 
 SELECT * FROM tbl_Livro ORDER BY Nome_Livro DESC;
+
 -- ORDER BY Nome_Livro DESC;
 
 select Nome_Livro, ID_Editora from tbl_Livro order by ID_Editora;
@@ -184,3 +189,42 @@ insert Cliente (ID_Cliente, Nome_CLiente) values (43,'Gilberto');
 select * from Clientes;
 
 rename table Clientes to Meus_Clientes
+
+-- REGEXP - Expressões Regulares em consultas....
+-- [...] : Qualquer caracter único no intervalo ou conjunto ou conjunto especificado ([a-h]; [aeiou];)....
+-- [^...] : Qualquer caracter único que não esteja no intervalo ou conjunto especificado ([^ a-h]; [^ aeiou])....
+-- ^ : Inicio da string...
+-- $ : Fim da string...
+# a | b | c : Alteração (a ou b ou c)...
+
+select Nome_Livro from tbl_Livro where Nome_Livro regexp '^[FS]';
+
+select Nome_Livro from tbl_Livro where Nome_Livro regexp '^[^FS]';
+
+select Nome_Livro from tbl_Livro where Nome_Livro regexp '[ng]$';
+
+select Nome_Livro from tbl_Livro where Nome_Livro regexp '^[FS] | Mi';
+
+-- DEFAULT - Valores padrão em colunas...
+alter table tbl_autores modify column Sobrenome_Autor varchar(60) default 'da Silva';
+
+-- Inserir registros para teste:
+insert into tbl_autores(ID_Autor, Nome_autor) values(6, 'Alex');
+
+-- Inserir registros para teste de Nome e o Sobrenome:
+insert into tbl_autores(ID_Autor, Nome_autor, Sobrenome_Autor) values(9, 'Rita', 'de Souza');
+
+-- Não foi especificado o sobrenome do autor, será assumido o padrão criado. Verificando o resultado.
+select * from tbl_autores;
+
+-- DEFAULT - Valores padrão em colunas...
+alter table tbl_autores modify column Sobrenome_Autor varchar(60);
+
+-- Inserir registros para teste:
+insert into tbl_autores(ID_Autor, Nome_autor) values(10, 'Ana');
+
+-- Não foi especificado o sobrenome do autor, será assumido o padrão criado. Verificando o resultado.
+select * from tbl_autores;
+
+-- mysqldump - Backup e Restauração do Banco de Dados...
+create database teste_restore;
