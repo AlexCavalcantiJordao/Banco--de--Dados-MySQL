@@ -228,3 +228,30 @@ select * from tbl_autores;
 
 -- mysqldump - Backup e Restauração do Banco de Dados...
 create database teste_restore;
+
+-- GROUP BY - Agrupamento de Registros...
+create table Vendas(
+ID smallint primary key,
+Nome_Vendedor varchar(20),
+Quantidade int,
+Produto varchar(20),
+Cidade varchar(20));
+
+insert into Vendas (ID, Nome_Vendedor, Quantidade, Produto, Cidade) values(10, 'Jorge', 1400, 'Mouse', 'São Paulo');
+insert into Vendas (ID, Nome_Vendedor, Quantidade, Produto, Cidade) values(12, 'Tatiana', 1400, 'Teclado', 'Amazônas');
+insert into Vendas (ID, Nome_Vendedor, Quantidade, Produto, Cidade) values(14, 'Ana', 1220, 'Monitor', 'Rio de Janeiro');
+insert into Vendas (ID, Nome_Vendedor, Quantidade, Produto, Cidade) values(16, 'Rita', 1700, 'Mesa de Computador', 'Recife');
+insert into Vendas (ID, Nome_Vendedor, Quantidade, Produto, Cidade) values(18, 'Marcos', 2159, 'Cadeira Gamer', 'Santa Catarina');
+insert into Vendas (ID, Nome_Vendedor, Quantidade, Produto, Cidade) values(20, 'Carla', 980, 'Fone de Ouvido', 'Recife');
+insert into Vendas (ID, Nome_Vendedor, Quantidade, Produto, Cidade) values(22, 'Roberto', 1120, 'Estabilizador', 'Rio Grande do Sul');
+
+select * from Vendas where Produto = 'Mouse';
+
+-- Consultas usando agregação para obter total de vendas de mouses:
+select sum(Quantidade) as TotalMouses from Vendas where Produto = 'Mouse';
+
+-- Consultas totalizando as vendas de todos os produtos por cidade:
+select Cidade, sum(Quantidade) as Total from Vendas group by Cidade;
+
+-- Agrupar as vendas nas Vendas:
+select Cidade, count(*) as Total from Vendas group by Cidade;
