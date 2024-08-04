@@ -255,3 +255,25 @@ select Cidade, sum(Quantidade) as Total from Vendas group by Cidade;
 
 -- Agrupar as vendas nas Vendas:
 select Cidade, count(*) as Total from Vendas group by Cidade;
+
+--  HAVING - Filtrando os resultados do Agrupamento...
+
+-- Consulta retornando total de vendas das cidades com menos de 2500 produtos vendidos:
+select Cidade, sum(Quantidade) as Total from Vendas group by Cidade having sum(Quantidade) < 2500;
+
+-- Exemplo 02: Consulta retornando total de vendas do produto "Teclados" das cidades com menos de 1500 teclados vendidos:
+select Cidade, sum(Quantidade) as TotalTeclados from Vendas where Produto = 'Teclados' group by Cidade having sum(Quantidade) < 1500;
+
+create view vw_LivroAutores as select tbl_Livro.Nome_Livro as Livro, tbl_autores.Nome_Autor as Autor from tbl_Livro
+inner join tbl_autores on tbl_Livro.ID_Autor = tbl_autores.ID_Autor;
+
+select Livro, Autor from vw_LivroAutores order by Autor;
+
+-- View - Alteração....
+create view vw_LivroAutores as select tbl_Livro.Nome_Livro as Livro, tbl_autores.Nome_Autor as Autor, Preco_Livro as Valor from tbl_Livro
+inner join tbl_autores on tbl_Livro.ID_Autor = tbl_autores.ID_Autor;
+
+select * from vw_LivroAutores order by Valor;
+
+-- Exclusão de uma Visão:
+drop view vw_LivroAutores;
