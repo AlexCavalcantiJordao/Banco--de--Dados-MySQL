@@ -57,7 +57,6 @@ references tbl_editora(ID_editora);
 
 select * from tbl_Livro;
 
-
 insert into tbl_autores(ID_Autor, Nome_Autor, SobreNome_Autor) values(1, 'Daniel', 'Barret');
 
 insert into tbl_autores(ID_Autor, Nome_Autor, SobreNome_Autor) values(2, 'erald', 'Carter');
@@ -177,8 +176,7 @@ select sum(Preco_Livro) from tbl_Livro;
 create table Clientes(
 ID_Cliente smallint,
 Nome_Cliente varchar (20),
-constraint primary key  (ID_Cliente)
-);
+constraint primary key  (ID_Cliente));
 
 insert into Clientes (ID_Cliente, Nome_Cliente) values (22, 'Alex');
 
@@ -277,3 +275,30 @@ select * from vw_LivroAutores order by Valor;
 
 -- Exclusão de uma Visão:
 drop view vw_LivroAutores;
+
+-- INNER JOIN - Consultar dados em duas ou mais...
+select * from tbl_Livro inner join tbl_autores on tbl_Livro.ID_Autor = tbl_autores.ID_Autor;
+
+create view vw_LivroAutores as select tbl_Livro.Nome_Livro as Livro, tbl_autores.Nome_Autor as Autor, Preco_Livro as Valor from tbl_Livro
+inner join tbl_autores on tbl_Livro.ID_Autor = tbl_autores.ID_Autor;
+
+-- Usando Aliares e cláusulas WHERE e LIKE...
+select L.Nome_Livro as Livro, E.Nome_editora as Editoras from tbl_Livro as L inner join tbl_editora as E
+on L.ID_editora = E.ID_editora where E.Nome_Editora like 'M%';
+
+select L.Nome_Livro as Livro, A.Nome_autor as Autor, E.Nome_Editora as Editora from tbl_Livro as L
+inner join tbl_autores as A on L.ID_autor = A.ID_autor inner join tbl_editora as E on L.ID_editora = E.ID_Editora;
+
+-- LEFT JOIN e RIGHT JOIN - Consultar dados em duas ou mais...
+select * from tbl_autores left join tbl_Livro on tbl_Livro.ID_Autor = tbl_autores.ID_Autor;
+
+-- LEFT JOIN excluindo correspondência...
+select * from tbl_autores left join tbl_Livro on tbl_Livro.ID_Autor = tbl_autores .ID_Autor
+where tbl_Livro.ID_Autor is null;
+
+-- RIGHT JOIN excluindo correspondência...
+select * from tbl_Livro as Li right join tbl_editora as Ed on Li.ID_Editora = Ed.ID_Editora where Li.ID_editora is null;
+
+insert into tbl_editora(ID_editora, Nome_Editora) values (6, 'Companhia das Letras.');
+
+select * from tbl_editora;
