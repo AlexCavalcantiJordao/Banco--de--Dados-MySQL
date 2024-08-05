@@ -58,27 +58,18 @@ references tbl_editora(ID_editora);
 select * from tbl_Livro;
 
 insert into tbl_autores(ID_Autor, Nome_Autor, SobreNome_Autor) values(1, 'Daniel', 'Barret');
-
 insert into tbl_autores(ID_Autor, Nome_Autor, SobreNome_Autor) values(2, 'erald', 'Carter');
-
 insert into tbl_autores(ID_Autor, Nome_Autor, SobreNome_Autor) values(3, 'Mark', 'Sobell');
-
 insert into tbl_autores(ID_Autor, Nome_Autor, SobreNome_Autor) values(4, 'William', 'Stanek');
-
 insert into tbl_autores(ID_Autor, Nome_Autor, SobreNome_Autor) values(5, 'Richard', 'Blum');
 
 select * from tbl_autores;
 
 INSERT INTO tbl_editoras (Nome_Editora) VALUES ('Prentice Hall');
-
 INSERT INTO tbl_editoras (Nome_Editora) VALUES ('O´Reilly');
-
 INSERT INTO tbl_editoras (Nome_Editora) VALUES ('Microsoft Press');
-
 INSERT INTO tbl_editoras (Nome_Editora) VALUES ('Wiley');
-
 INSERT INTO tbl_editoras (Nome_Editora) VALUES ('McGraw-Hill Education');
-
 INSERT INTO tbl_livro (Nome_Livro, ISBN13, ISBN10, Data_Pub, Preco_Livro, Categoria, ID_Autor, ID_Editora)
 VALUES
 ('Linux Command Line and Shell Scripting','9781118983843', '111898384X', '20150109', 68.35, 1, 5, 4),
@@ -90,27 +81,18 @@ VALUES
 ('Practical Electronics for Inventors', '9781259587542', '1259587541', '20160324', 67.80, 1, 13, 5);
 
 insert into tbl_Livro(Nome_Livro, ISBN, Data_Pub, Preco_Livro, ID_Autor, ID_Editora) values('Linux Command Line and Shell Scripting', '143856969', 68.35, 5, 4);
-
 insert into tbl_Livro(Nome_Livro, ISBN, Data_Pub, Preco_Livro, ID_Autor, ID_Editora) values('SSH, the Secure Shell', '127658785', 58.30, 1);
-
 insert into tbl_Livro(Nome_Livro, ISBN, Data_Pub, Preco_Livro, ID_Autor, ID_Editora) values('Using Samba', '123856789', '20001221', 61.45, 2, 2);
 
 select * from tbl_livro;
-
 select Nome_Autor from tbl_autores;
-
 select * from tbl_autores;
-
 select Nome_Livro from tbl_livro;
-
 select Nome_Livro, ISBN, Data_Pub from tbl_Livro;
-
 SELECT * FROM tbl_Livro ORDER BY Nome_Livro DESC;
 
 -- ORDER BY Nome_Livro DESC;
-
 select Nome_Livro, ID_Editora from tbl_Livro order by ID_Editora;
-
 select Nome_Livro, Preco_Livro from tbl_Livro order by Preco_Livro desc;
 
 show index from tbl_Editoras;
@@ -118,18 +100,13 @@ show index from tbl_Editoras;
 create index idx_editora on tbl_Editoras(NomeEditora);
 
 select Nome_Livro, Data_Pub from tbl_Livro where ID_Autor = 1;
-
 select ID_Autor, Nome_Autor from tbl_autores where SobreNome_Autor = 'Stanek';
-
 select * from tbl_Livro where ID_Livro > 2 and ID_Autor < 3;
-
 select * from tbl_Livro where ID_Livro > 2 or ID_Autor < 3;
-
 select * from tbl_Livro where ID_Livro > 2 and not ID_Autor < 3;
 
 -- Operadores IN e NOT IN....
 -- Filtragens usando listas de valores no MySQL....
-
 use db_Biblioteca;
 
 -- Sintaxe:
@@ -145,11 +122,8 @@ select NomeLivro, Edicao from tbl_livro where Edicao not in (1,2);
 select NomeLivro, IdEditora from tbl_livro where IdEditora in (select IDEditora from tbl_editora where NomeEditora = 'Wiley' or NomeEditora = 'Microsoft Press');
 
 select * From tbl_livro;
-
 select NomeEditora, IdEditora from tbl_editora;
-
 select * from tbl_teste_incremento;
-
 delete from tbl_teste_incremento where Codigo = 90;
 
 truncate table tbl_teste_incremento;
@@ -162,15 +136,10 @@ select Nome_Livro as Livros, Preco_Livro as Preço
 from tbl_Livro;
 
 select count(*) from tbl_autores;
-
 select count(distinct id_autor) from tbl_Livro;
-
 select max(Preco_Livro) from tbl_Livro;
-
 select min(Preco_Livro) from tbl_Livro;
-
 select avg(Preco_Livro) from tbl_Livro;
-
 select sum(Preco_Livro) from tbl_Livro;
 
 create table Clientes(
@@ -179,9 +148,7 @@ Nome_Cliente varchar (20),
 constraint primary key  (ID_Cliente));
 
 insert into Clientes (ID_Cliente, Nome_Cliente) values (22, 'Alex');
-
 insert Clientes (ID_Cliente, Nome_Cliente) values (34,'Fabio');
-
 insert Cliente (ID_Cliente, Nome_CLiente) values (43,'Gilberto');
 
 select * from Clientes;
@@ -196,11 +163,8 @@ rename table Clientes to Meus_Clientes
 # a | b | c : Alteração (a ou b ou c)...
 
 select Nome_Livro from tbl_Livro where Nome_Livro regexp '^[FS]';
-
 select Nome_Livro from tbl_Livro where Nome_Livro regexp '^[^FS]';
-
 select Nome_Livro from tbl_Livro where Nome_Livro regexp '[ng]$';
-
 select Nome_Livro from tbl_Livro where Nome_Livro regexp '^[FS] | Mi';
 
 -- DEFAULT - Valores padrão em colunas...
@@ -298,7 +262,7 @@ where tbl_Livro.ID_Autor is null;
 
 -- RIGHT JOIN excluindo correspondência...
 select * from tbl_Livro as Li right join tbl_editora as Ed on Li.ID_Editora = Ed.ID_Editora where Li.ID_editora is null;
-
 insert into tbl_editora(ID_editora, Nome_Editora) values (6, 'Companhia das Letras.');
-
 select * from tbl_editora;
+
+-- Concatenação de Strings com CONCAT, IFNULL e COALESCE...
