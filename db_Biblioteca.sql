@@ -266,3 +266,113 @@ insert into tbl_editora(ID_editora, Nome_Editora) values (6, 'Companhia das Letr
 select * from tbl_editora;
 
 -- Concatenação de Strings com CONCAT, IFNULL e COALESCE...
+-- É possível concatenar strings usando-se a função CONCAT()....
+-- Sintaxe:
+-- concat(string | nome_coluna, <string | nome_coluna)
+-- Exemplo:
+select concat('Alex', 'Cavalcanti') as 'Meu nome';
+select concat(Nome_Autor, ' ',  Sobrenome_Autor) as 'Nome Completo' from tbl_autores;
+select concat('Gosto de futebol', Nome_Livro) as tbl_Livro where ID_autor = 2;
+
+create table teste_nulos(
+id smallint primary key auto_increment,
+item varchar(20),
+quantidade smallint null);
+
+insert into teste_nulo(id, item, quantidade) values (1, 'Pendrive', 5);
+insert into teste_nulo(id, item, quantidade) values (2, 'Monitor', 7);
+
+create table teste_nulos(
+id smallint primary key auto_increment,
+item varchar(20),
+quantidade smallint null);
+
+insert into teste_nulo(id, item, quantidade) values (1, 'Pendrive', 5);
+insert into teste_nulo(id, item, quantidade) values (2, 'Monitor', 7);
+insert into teste_nulo(id, item, quantidade) values (2, 'Teclado', 9);
+insert into teste_nulo(id, item, quantidade) values (2, 'Mouse', 11);
+
+select * from teste_nulos;
+
+-----------------------------------------------------------------------------------------------------------------------------------
+-- Se uma string for concatenada com NULL, o resultado....
+-- Retornando será apenas NULL:
+select concat('A quantidade adquirida é ', ' ', quantidade) from teste_nulos where item = 'Teclado';
+
+-----------------------------------------------------------------------------------------------------------------------------------
+-- Funções IFNULL e COALESCE:
+-- IFNULL (coluna, substituição)...
+select concat('A quantidade adquirida é ',  ' ', ifnull(quantidade, 0)) from teste_nulos where item = 'Teclado';
+
+-- COALESCE (valor1, valor2, ...., valorN); Essa Função retornará o primeiro valor não-nulo encontrado em seus argumentos...
+select concat('A quantidade adquirido é ', ' ', coalesce(null, quantidade, null, 0)) from teste_nulos where item = 'Teclado';
+
+--  Funções Matemáticas e Operadores Aritméticos...
+-- Operação aritmétricas
+-- É possível realizar operação matemática simples nos valores de uma coluna e retornar em uma coluna calculada. Para isso usamos operadores matemáticos comuns:
+-- + : Soma...
+-- - : Subtração...
+-- / : Divisão...
+-- * : Multiplcação...
+-- % ou ADD : Módulo resto da divisão...
+-- DIV : Divisão Inteira...
+
+-- Exemplos:
+select 3 * 0;
+select Nome_Livro, Preco_Livro * 5 as 'Preço de 5 unidades' from tbl_Livro;
+
+select 9 * 2 / 3;
+select Nome_Livro, Preco_Livro / 2 as 'Preço com 50% de desconto' from tbl_Livro;
+
+select 10 / 3;
+select 10 mod 3;
+
+-----------------------------------------------------------------------------------------------------------------------------------
+-- Funções matemáticas...
+-- É possível também utilizar funções matemática nos valores de uma coluna e retornar resultados em uma coluna calculadas. Abaixo vemos algumas funções matemáticas mais comuns:
+-- CEILING() : Arredondar para cima...
+-- FLOOR() : Arredondar para baixo...
+-- PI() : Retornar o valor de PI...
+-- POW(x, y)  : Retornar x elevado a y...
+-- SQRT() : Raiz quadrada de um argumento...
+-- SIN() : Retornar o seno de um número dado em radianos...
+-- HEX() : Retorna a representação hexadecimal de um valor decimal...
+
+-- Exemplos:
+select Nome_Livro, ceiling(Preco_Livro * 5) as 'Preço Arredondamento' from tbl_Livro;
+select pi();
+select pow(2,4);
+select sqrt(81);
+select sin(pi());
+select hex(1200);
+
+-- Rotinas Armazenadas - Funções (CREATE FUNCTION)....
+-- Criando a função:
+create function fn_teste(a decimal(10,2), b int) returns int
+return a * b;
+
+-- Invocando:
+select fn_teste(2.5, 4) as Resultados;
+
+select Nome_Livro, fn_teste(Preco_Livro, 6) as 'Preço de 6 unidades' from tbl_Livro where ID_Livro = 2;
+drop function fn_teste;
+
+--  Procedimentos Armazenados (Stored Procedures)...
+-- Sintaxe de criação do procedimento:
+create procedure nome_procedimento (parâmetros) declaração;
+
+-- Invocando o Procedimento:
+call nome_procedimento (parâmetros);
+
+-- Criar procedimentos:
+create procedure verPreço(varLivro smallint)
+select concat('O preço é ', Preco_Livro) as Preço from tbl_Livro where ID_Livro = varLivro;
+
+-- Invocando o procedimeto:
+call verPreço(3);
+
+-- Excluindo Procedimentos:
+drop procedure nome_procedimento;
+drop procedure verPreço;
+
+--  Blocos BEGIN...END em Funções e Procedimentos Armazenados...
