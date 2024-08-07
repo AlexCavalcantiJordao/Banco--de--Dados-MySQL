@@ -376,3 +376,91 @@ drop procedure nome_procedimento;
 drop procedure verPreço;
 
 --  Blocos BEGIN...END em Funções e Procedimentos Armazenados...
+DELIMITER $$
+create function aumenta_preco (preco decimal(10,2), taxa decimal(10,2))
+BEGIN
+	return preco + preco * taxa /100;
+END
+DELIMITER;
+
+-----------------------------------------------------------------------------------------------------------------------------------
+-- criar procedimento...
+delimiter //
+create procedure verPreços (varLivro smallint)
+begin
+	select concat('Preço é ', Preco_Livro) as Preco from tbl_Livro where ID_Livro = varLivro;
+	select 'Procedimento executado com sucesso !';
+end//
+delimiter ;
+
+-- Invocando o procedimento:
+call verPreço(3);
+
+-- Parâmetros IN, OUT e INOUT em Procedimentos Armazenados...
+-- Parâmetros IN:
+-- Exemplos 01:
+delimiter //
+create procedure editora_livro (in editora varchar(50))
+begin
+select L.Nome_Livro, E.Nome_Editora
+	from tbl_Livro as L
+	inner join tbl_editoras as E
+	on L.ID_Editora = E.ID_Editora
+	where E.Nome_Editora = editora;
+end //
+delimiter ;
+
+call editora_livro('Wiley');
+set @minhaeditora = 'Wiley';
+call editora_livro(@minhaeditora);
+
+-- Exemplos 02:
+delimiter //
+create procedure aumenta_preco(in codigo int, taxa decimal(10,2))
+begin
+	update tbl_Livro
+	set Preco_Livro = tbl_Livro.Preco_Livro + tbl_Livro.Preco_Livro * taxa / 100
+	where ID_Livro = Codigo;
+end//
+delimiter ;
+
+-- Testando: Vamos aumentar o preço do livro de ID 4 em 20%....
+-- Primeiro verificamos o preço atual:
+select * from tbl_Livro where ID_Livro = 4;
+-- Aplicamos agora o procedimento de aumento:
+set @livro = 4;
+set @aumento = 20; -- Aumento de 20%
+call aumenta_preco(@livro, @aumento);
+
+-- Verificando aumento aplicativo...
+select * from tbl_Livro where ID_Livro = 4;
+
+-- Exemplo de Parâmetros OUT:
+delimiter //
+create procedure teste_out (in id int, out livro varchar(50))
+begin
+	select Nome_Livro
+	into livro
+	from tbl_Livro
+	where ID_Livro = id;
+end //
+delimiter ;
+
+call teste_out(3, @livro);
+select @livro;
+
+-- No exemplo a seguir, o valor da variavel que for passado ao parâmetro "valor" será  refletido na própria variável externa, a qual terá valor alterado também...
+delimiter //
+create procedure aumento (inout valor decimal(10,2), taxa decimal(10,2))
+begin
+set valor = valor + valor * taxa / 100;
+end //
+delimiter ;
+
+-- Testando: Criamos a variavel valorizando, e a usamos para passar o parametros valor. Vamos aumentar o valor eme 15%...
+set @valorinicial = 20.00;
+select @valorinicial;
+
+call aumenta(@valorinicial, 15.00);
+-- Verificamos agora se a variavel externa @valorinicial foi alterada:
+select @valorinicial;
