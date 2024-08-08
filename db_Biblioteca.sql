@@ -1,3 +1,4 @@
+
 create database db_Biblioteca;
 
 use db_Biblioteca;
@@ -453,7 +454,7 @@ select @livro;
 delimiter //
 create procedure aumento (inout valor decimal(10,2), taxa decimal(10,2))
 begin
-set valor = valor + valor * taxa / 100;
+	set valor = valor + valor * taxa / 100;
 end //
 delimiter ;
 
@@ -464,3 +465,155 @@ select @valorinicial;
 call aumenta(@valorinicial, 15.00);
 -- Verificamos agora se a variavel externa @valorinicial foi alterada:
 select @valorinicial;
+
+-- Variáveis Locais e Escopo - Comando DECLARE...
+-- Exemplos com SELECT...INTO (o desconto será dado diretamente em reais, não porcentagem; Os comandos devem ser ajustados para retornar apenas uma linha no SELECT...INTO)....
+delimiter //
+create function calcula_desconto(livro int, desconto decimal(10,2))
+returns decimal(10,2)
+begin
+	declare preco decimal(10,2);
+	select Preco_Livro from tbl_Livro
+	where ID_Livro = Livro into preco;
+	return preco - desconto;
+end //
+delimiter ;
+
+-- Testando com o livro de ID 4 e desconto de R$ 10,00...
+select  * from tbl_Livro where ID_Livro = 4;
+select calcula_desconto(4, 10.00);
+
+select * from tbl_Livro where ID_Livro = 4;
+
+-- Blocos Condicionais IF - THEN - ELSE e CASE...
+-- Exemplo de bloco IF:
+delimiter //
+create function calcula_imposto(salario dec(8,2))
+returns dec(8,2)
+begin
+	declare valor_imposto dec(8,2);
+	if salario < 1000.00 then
+		set valor_imposto = 0.00;
+	elseif salario < 2000.00 then
+		set valor_imposto = salario * 0.15;
+	elseif  salario < 3000.00 then
+		set valor_imposto = salario * 0.22;
+	else
+		set valor_imposto = salario * 0.27;
+	end if;
+	return valor_imposto;
+end //
+delimiter ;
+
+-- Vamos testar passando valores de salários como parâmetros...
+-- Usaremos valores como 850, 1200 e 600 para testes:
+select calcula_imposto(850.00);
+
+-----------------------------------------------------------------------------------------------------------------------------------
+-- Exemplos de comandos CASE:
+delimiter //
+create function calcula_imposto(salario dec(8,2))
+returns dec(8,2)
+begin
+	declare valor_imposto dec(8,2);
+    case
+	when salario < 1000.00 then
+		set valor_imposto = 0.00;
+	when salario < 2000.00 then
+		set valor_imposto = salario * 0.15;
+	when salario < 3000.00 then
+		set valor_imposto = salario * 0.22;
+	else
+		set valor_imposto = salario * 0.27;
+	end case;
+	return valor_imposto;
+end //
+delimiter ;
+
+select calcula_imposto(700.00);
+
+-- Comandos SHOW, DESCRIBE e mysqlshow...
+
+--  Estruturas de Repetição - comando LOOP...
+delimiter //
+create procedure acumula(limite int)
+begin
+	declare contador int default 0;
+	declare soma int default 0;
+	loop_teste: loop
+		set contador = contador + 1;
+		set soma = soma + contador;
+		if contador >= limite then
+			leave loop_teste;
+		end if;
+	end loop loop_teste;
+	select soma;
+end //
+delimiter ;
+
+-- Testando...
+call acumula(10);
+
+-- Estruturas de Repetição - comando REPEAT...
+delimiter //
+create procedure acumula_repita(limite tinyint unsigned)
+begin
+	declare contador tinyint unsigned default 0;
+	declare soma int default 0;
+    repeat
+		set contador = contador + 1;
+		set soma = soma + contador;
+	until contador >= limite
+	end repeat;
+    select soma;
+end //
+delimiter ;
+
+-- Testando a estrutura REPITA:
+call acumula_repita(10);
+call acumula_repita(0);
+-- Este resultado em valor errado, pois o contador é incrementado ANTES do teste condicional....
+
+-- Resolvendo o problema do teste de REPITA....
+drop procedure if exists acumula_repita;
+delimiter //
+create procedure acumula_repita(limite tinyint unsigned)
+main: begin
+	declare contador tinyint unsigned default 0;
+	declare soma int default 0;
+	if limite < 1 then
+		select 'O valor deve  ser maior que zero.' as Erro;
+		leave main;
+	end if;
+	repeat
+		set contador = contador + 1;
+		set soma = contador + soma;
+	until contador >= limite
+	end repeat;
+	select soma;
+end //
+delimiter ;
+
+-- Restando a estrutura REPITA:
+call acumula_repita(10);
+call acumula_repita(0);
+
+ -- Estruturas de Repetição - comando WHILE...
+ delimiter //
+ create procedure acumula_while(limite tinyint unsigned)
+begin
+	declare contador tinyint unsigned default 0;
+	declare soma int default 0;
+		while contador < limite do
+		set contador = contador + 1;
+		set soma = contador + soma;
+	end while;
+	select soma;
+end //
+delimiter ;
+
+-- Testando:
+call acumula_repita(10);
+call acumula_repita(0);
+
+-- Estruturas de Repetição - declaração ITERATE...
