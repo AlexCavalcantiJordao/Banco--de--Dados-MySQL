@@ -617,3 +617,78 @@ call acumula_repita(10);
 call acumula_repita(0);
 
 -- Estruturas de Repetição - declaração ITERATE...
+delimiter //
+create procedure acumula_iterate(limite tinyint unsigned)
+begin
+	declare contador tinyint unsigned default 0;
+	declare soma int unsigned default 0;
+	teste: loop
+		set contador = contador;
+		set soma = soma + contador;
+		if contador < limite then
+			iterate teste;
+		end if;
+		leave teste;
+	end loop teste;
+	select soma;
+end //
+delimiter ;
+
+call acumula_iterate(10);
+
+delimiter //
+create procedure pares(limite tinyint unsigned)
+main: begin
+	declare contador tinyint default 0;
+	meuloop: while contador < limite do
+		set contador = contador + 1;
+		if mod(contador, 2) then
+			iterate meuloop;
+		end if;
+		select concat(contador, ' é um número par') as valor;
+	end while;
+end //
+delimiter ;
+
+-- Testando:
+call pares(20);
+
+-- Triggers - Definição, Sintaxe e Criação...
+
+-- Triggers:
+-- "Gatilho"
+-- Associado a uma tabela.
+-- Procedimento invocado quando um comando DML é executado.
+
+-- Uso do Trigger:
+-- Verificação de integridade dos dados.
+-- Validação dos dados.
+-- Rastreamento e registros de logs de atividades nas tabelas.
+-- Arquivamentos de registros excluidos.
+
+-- Um trigger é associados a uma tabela.
+-- Armazenado no BD como um arquivo separado.
+-- Não são chamados diretamente, são invocados automaticamente.
+
+-- Sintaxe dos Triggers:
+create trigger nome timing operação on tabela for each row declaração
+timing = before | after
+operação = insert | update | delete
+
+create table produto(
+idProduto int not null auto_increment,
+Nome_Produto varchar(45) null,
+Preco_Normal decimal(10,2) null,
+Preco_Desconto decimal(10,2) null,
+primary key (idProduto));
+
+-- Criando o Trigger:
+create trigger tr_desconto before insert on produto for each row
+set new.Preco_Desconto = (new.Preco_Normal * 0.90);
+
+insert into produto(Nome_produto, Preco_Normal) values('Monitor', 1.00);
+
+select * from produto;
+
+--  Gerenciamento de Usuários do sistema – Criar, Consultar, Renomear e Excluir...
+-- Definindo privilégios de acesso com GRANT e REVOKE...
