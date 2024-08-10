@@ -1,4 +1,3 @@
-
 create database db_Biblioteca;
 
 use db_Biblioteca;
@@ -453,9 +452,9 @@ select @livro;
 -- No exemplo a seguir, o valor da variavel que for passado ao parâmetro "valor" será  refletido na própria variável externa, a qual terá valor alterado também...
 delimiter //
 create procedure aumento (inout valor decimal(10,2), taxa decimal(10,2))
-begin
+	begin
 	set valor = valor + valor * taxa / 100;
-end //
+	end //
 delimiter ;
 
 -- Testando: Criamos a variavel valorizando, e a usamos para passar o parametros valor. Vamos aumentar o valor eme 15%...
@@ -692,3 +691,6 @@ select * from produto;
 
 --  Gerenciamento de Usuários do sistema – Criar, Consultar, Renomear e Excluir...
 -- Definindo privilégios de acesso com GRANT e REVOKE...
+
+-- Criar novo Banco de Dados e Tabelas...
+select * from country;
