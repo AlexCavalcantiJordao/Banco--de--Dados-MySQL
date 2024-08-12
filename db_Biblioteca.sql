@@ -694,3 +694,13 @@ select * from produto;
 
 -- Criar novo Banco de Dados e Tabelas...
 select * from country;
+
+-- O que são Subconsultas SQL (Subqueries) em Bancos de Dados....
+use db_biblioteca;
+
+select NomeLivro, PrecoLivro, IdEditora
+from tbl_livro
+where IdEditora =
+	(select IdEditora
+	from tbl_editora
+	where NomeEditora = 'Wiley');
