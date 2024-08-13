@@ -704,3 +704,107 @@ where IdEditora =
 	(select IdEditora
 	from tbl_editora
 	where NomeEditora = 'Wiley');
+    
+select * from tbl_livro;
+
+update tbl_livro
+set PrecoLivro = PrecoLivro * 1.12
+where IdEditora =
+	(select IdEditora
+	from tbl_editora
+	where NomeEditora = 'Microsoft Press');
+    
+-- Funções de Arredondamento no MySQL - ROUND, FLOOR, CEILING, TRUNCATE....
+-- ROUND, TRUNCATE, CEILING, FLOOG...
+-- Função ROUND()
+select PrecoLivro as 'Preço Real',
+round(PrecoLivro, 1) as 'Valores Arredondados'
+from tbl_Livros where PrecoLivro > 150.00;
+
+select avg(PrecoLivro) as 'Preço Médio',
+round(avg(PrecoLivro),2) as 'Preço médio arredondado'
+from tbl_Livros;
+
+-- Função TRUNCATE...
+-- Exibe o número de casas indicados, sem arredondar...
+select PrecoLivro as 'Preço Real',
+truncate(PrecoLivro,0) as 'Valores Arredondados'
+from tbl_Livros
+where PrecoLivro > 150.00;
+
+-- TRUNCATE não tem nada a haver com TRUNCATE TABLE.....
+
+-- Função FLOOR....
+select floor(63.757) as Arredondado;
+
+select PrecoLivro as 'Preço Real',
+floor(PrecoLivro) as 'Reais sem centavos'
+from tbl_livros
+where PrecoLivro > 150.00;
+
+-- Função CEILING() e Função CEIL().... 
+select ceiling(63.757) as Arredondado;
+
+select PrecoLivro as 'Preço Real',
+ceiling(PrecoLivro) as 'Arredondado para cima'
+from tbl_livros
+where PrecoLivro > 150.00;
+
+-- Todas as função....
+select PrecoLivro as 'Preço Real', round(PrecoLivro) as 'ROUND', floor(PrecoLivro) as 'FLOOR', ceiling() as 'CEILING',
+truncate(PrecoLivro) as 'TRUNCATE' from tbl_livros where PrecoLivro > 150.00 order by PrecoLivro;
+
+-- Transações no MySQL - COMMIT e ROLLBACK...
+
+-- Propriedades ACID
+-- Atomicidade
+-- Consistência
+-- Isolamento
+-- Durabilidade
+-- Deve ser executado de forma completa ou não ter nenhum efeito nas tabela....
+-- COMMIT Consolidação da transação....
+-- ROLLBACK Transação totalmente desfeita...
+
+set @@autocommit = off;
+select @@autocommit;
+
+-- Transações
+-- Criar tabela para teste:
+create table Dados_Livros
+select NomeLivro, ISBN13, PrecoLivro
+from tbl_livros;
+
+-- Visualizar conteúdo da tabela...
+select * from Dados_Livro;
+
+-- Transição com ROLLBACK....
+start transaction;
+  delete from Dados_Livro;
+	insert into Dados_Livro(NomeLivro, ISBN13, PrecoLivro)
+	values('Ciência de Dados com Python', '9876532145632', 69.88);
+  select * from Dados_Livro;
+rollback;
+
+select * from Dados_Livro;
+
+-- Transição com COMMIT....
+start transaction;
+  delete from Dados_Livro;
+	insert into Dados_Livro(NomeLivro, ISBN13, PrecoLivro)
+	values('Ciência de Dados com Python', '9876532145632', 69.88);
+  select * from Dados_Livro;
+commit;
+
+select * from Dados_Livro;
+
+-- Exemplos com STORED PROCEDURE....
+delimiter //
+create procedure insere_dados()
+begin
+declare erro_sql tinyint default false;
+declare continue handler for sqlexception set erro_sql = true;
+start transaction;
+insert into Dados_Livro(NomeLivro, ISBN13, PrecoLivro) values
+('História da Numismática', '9789865321456', 78.60);
+insert into Dados_Livro(NomeLivro, ISBN13, PrecoLivro) values
+('Biologia Marinha', '9784233876972', 177.50);
