@@ -294,12 +294,12 @@ insert into teste_nulo(id, item, quantidade) values (2, 'Mouse', 11);
 
 select * from teste_nulos;
 
------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Se uma string for concatenada com NULL, o resultado....
 -- Retornando será apenas NULL:
 select concat('A quantidade adquirida é ', ' ', quantidade) from teste_nulos where item = 'Teclado';
 
------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Funções IFNULL e COALESCE:
 -- IFNULL (coluna, substituição)...
 select concat('A quantidade adquirida é ',  ' ', ifnull(quantidade, 0)) from teste_nulos where item = 'Teclado';
@@ -326,8 +326,7 @@ select Nome_Livro, Preco_Livro / 2 as 'Preço com 50% de desconto' from tbl_Livr
 
 select 10 / 3;
 select 10 mod 3;
-
------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Funções matemáticas...
 -- É possível também utilizar funções matemática nos valores de uma coluna e retornar resultados em uma coluna calculadas. Abaixo vemos algumas funções matemáticas mais comuns:
 -- CEILING() : Arredondar para cima...
@@ -383,7 +382,7 @@ BEGIN
 END
 DELIMITER;
 
------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- criar procedimento...
 delimiter //
 create procedure verPreços (varLivro smallint)
@@ -507,8 +506,7 @@ delimiter ;
 -- Vamos testar passando valores de salários como parâmetros...
 -- Usaremos valores como 850, 1200 e 600 para testes:
 select calcula_imposto(850.00);
-
------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Exemplos de comandos CASE:
 delimiter //
 create function calcula_imposto(salario dec(8,2))
@@ -804,7 +802,23 @@ begin
 declare erro_sql tinyint default false;
 declare continue handler for sqlexception set erro_sql = true;
 start transaction;
-insert into Dados_Livro(NomeLivro, ISBN13, PrecoLivro) values
-('História da Numismática', '9789865321456', 78.60);
-insert into Dados_Livro(NomeLivro, ISBN13, PrecoLivro) values
-('Biologia Marinha', '9784233876972', 177.50);
+	insert into Dados_Livro(NomeLivro, ISBN13, PrecoLivro) values
+	      ('História da Numismática', '9789865321456', 78.60);
+	insert into Dados_Livro(NomeLivro, ISBN13, PrecoLivro) values
+	      ('Biologia Marinha', '9784233876972', 177.50);
+	insert into Dados_Livro(NomeLivro, ISBN13, PrecoLivro) values
+		  ('Quimica experimental', '9784523415974', 165.32);
+	insert into Dados_Livro(NomeLivro, ISBN13, PrecoLivro) values
+		  ('Artes Plásticas', '9784523415974', 98.00);
+	if erro_sql = false then
+		commit;
+        select 'Transação efetivada com sucesso.' as Resultado;
+	else
+		rollback;
+        select 'Erro na transação' as Resultado;
+	end if;
+end//
+delimiter ;
+
+call insere_dados();
+select * from Dados_Livro;
