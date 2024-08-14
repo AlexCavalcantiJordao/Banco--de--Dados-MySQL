@@ -822,3 +822,51 @@ delimiter ;
 
 call insere_dados();
 select * from Dados_Livro;
+
+-- Como retornar linhas aleatórias de uma tabela no MySQL com a função RAND.....
+-- Função:
+select floor(5 + round() * (5)) as Aleatorio;
+
+select * from tbl_livros order by rand() limit 3;
+
+-- Como unir consultas com operador UNION no MySQL.....
+
+-- Exercício 01: Retornar de livros e preços dos livros. Caso o preço de livro seja igual ou superior a R$ 150,00, mostrar a mensagem "Livro Caro" em uma coluna á direita no resultado da consulta.
+-- Caso ao contrário, mostrar a mensagem "Preço Razoável" ordenar por preço, do mais barato para o mais caro.
+select NomeLivro Livro, PrecoLivro Preco, 'Livro Caro' Resultado from tbl_Livros
+where PrecoLivro >= 150.00
+union
+select NomeLivro Livro, PrecoLivro Preco, 'Preço Razoável' Resultado from tbl_Livros
+where PrecoLivro < 150.00
+order by Preco;
+
+-- Exercício 01: Retornar nomes do Livros, preços e assuntos dos Livros. Caso o assunto seja Eletrônico, mostrar o preço acrescido de 15% em seu valor.
+-- Caso o Livro custe mais de R$ 200,00, descontar 10% em seu valor.
+-- Ordenar por preço ajsutado, do mais caro para o mais barato.
+select L.NomeLivro Livro, L.LivroPreco 'Preço Normal',
+L.PrecoLivro * 0.90 'Preço Ajustado', A.Assunto
+from tbl_Livro L inner join tbl_Assuntos A
+on L.IdAssunto = A.IdAssunto where L.PrecoLivro > 200.00
+union
+select L.NomeLivro Livro, L.PrecoLivro 'Preço Normal';
+
+select L.NomeLivro Livro, L.PrecoLivro 'Preço Normal',
+L.PrecoLivro * 1.15 'Preço Ajustado', A.Assunto
+from tbl_Livro L inner join tbl_Assuntos A
+on L.IdAssunto = A.IdAssunto where A.Assunto = 'Eletrônica'
+order by 'Preço Ajustado', dessc;
+
+-- Formatação de Data em consultas e registros de dados...
+select * from tbl_livro;
+
+select NomeLivro, date_format(DataPub, "%d%m%Y") as 'Data de Publicação'
+from tbl_livro;
+
+insert into tbl_livro(NomeLivro, ISBN, PrecoLivro, NumPaginas, Edicao, DataPub, IdEditora, IdAssunto)
+values ('Banco de Dados com MySQL', '9563214532178', 100.00, 400, 2, str_to_date("21/12/1985", "%d%m%y"), 1, 1);
+
+select NomeLivro, date_format(DataPub, "%d%m%Y") as 'Data de Publicação'
+from tbl_livro
+where DataPub between
+(str_to_date("20/12/1985", "%d%m%y")) and
+(str_to_date("20/12/1985", "%d%m%y"));
