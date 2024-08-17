@@ -870,3 +870,14 @@ from tbl_livro
 where DataPub between
 (str_to_date("20/12/1985", "%d%m%y")) and
 (str_to_date("20/12/1985", "%d%m%y"));
+
+-- Inserir dados em uma tabela MySQL com script em Python....
+select * from tbl_produtos;
+
+show tables
+
+-- Inserir dados fornecidos pelo usuário em tabela MySQL com Python....
+use db_biblioteca;
+select * from tbl_produtos;
+
+-- Atualizar dados em um banco MySQL com UPDATE usando Python...
